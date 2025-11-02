@@ -1,41 +1,40 @@
 "use client";
 
 import React, { JSX, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { fetchCurrentByCity, fetchOneCall } from "@/lib/store/weatherSlice";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export default function SearchBar(): JSX.Element {
-  const dispatch = useAppDispatch();
-  const units = useAppSelector((s) => s.weather.units);
-  const [q, setQ] = useState<string>("");
+interface SearchBarProps {
+  onSearch: (city: string) => void;
+}
 
-  async function onSearch(): Promise<void> {
-    const city = q.trim();
-    if (!city) return;
-    try {
-      const action = await dispatch(fetchCurrentByCity({ city })).unwrap();
-      const coords = action.data.coord;
+export default function SearchBar({ onSearch }: SearchBarProps): JSX.Element {
+  const [city, setCity] = useState("");
 
-      await dispatch(
-        fetchOneCall({ lat: coords.lat, lon: coords.lon, units })
-      ).unwrap();
-      setQ("");
-    } catch {}
-  }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      onSearch(city);
+    }
+  };
+
+  const handleClick = (): void => {
+    onSearch(city);
+  };
 
   return (
-    <div className="flex gap-2">
-      <input
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Search city (e.g. London)"
-        className="border p-2 rounded flex-1"
-        onKeyDown={(e) => {
-          if (e.key === "Enter") void onSearch();
-        }}
+    <div className="flex flex-col sm:flex-row gap-3 mt-4">
+      <Input
+        type="text"
+        placeholder="Search for a city..."
+        value={city}
+        onChange={(e) => setCity(e.target.value)}
+        onKeyDown={handleKeyDown}
+        className="flex-1"
       />
-      <Button onClick={() => void onSearch()}>Add</Button>
+      <Button onClick={handleClick} className="whitespace-nowrap">
+        Search
+      </Button>
     </div>
   );
 }

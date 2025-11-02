@@ -1,3 +1,6 @@
+
+
+
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { CurrentWeatherResponse, OneCallPayload } from "@/types/weather";
@@ -31,9 +34,7 @@ const loadFavoritesFromStorage = (): string[] => {
 const saveFavoritesToStorage = (favorites: string[]): void => {
   try {
     localStorage.setItem("favorites", JSON.stringify(favorites));
-  } catch {
-
-  }
+  } catch {}
 };
 
 const initialState: WeatherState = {

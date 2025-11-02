@@ -100,7 +100,7 @@ export default function CityCard({
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-x-0 bottom-0 h-1 bg-linear-to-r from-blue-400 via-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
     </Card>
   );
 }
